@@ -8,14 +8,18 @@ export const app = new Elysia()
 			references: fromTypes()
 		})
 	)
+	.onError(({ error, code }) => {
+			if (code === 'VALIDATION') return error.detail(error.message) 
+	})
 	.use(
 		await staticPlugin({
 			prefix: '/'
 		})
 	)
 	.get('/message', { message: 'Hello from server' } as const)
+	
 	.listen(3000)
-
+	
 console.log(
-	`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+	`🦊 Elysia server is running at ${app.server?.hostname}:${app.server?.port}`
 )
